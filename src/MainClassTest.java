@@ -21,4 +21,10 @@ public class MainClassTest extends MainClass {
             Assert.assertTrue("Returned value less than 45",this.getClassNumber() > 45);
         }
     }
+
+    @Test
+    public void testGetClassString()
+    {
+        Assert.assertTrue("Text not found",getClassString().contains("hello") || getClassString().contains("Hello"));
+    }
 }
