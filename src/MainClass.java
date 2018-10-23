@@ -6,14 +6,15 @@ import org.junit.Test;
  */
 public class MainClass {
 
+    private int class_number = 20;
+
+    public int getClassNumber()
+    {
+        return this.class_number;
+    }
+
     public int getLocalNumber()
     {
         return 14;
-    }
-
-    @Test
-    public void testGetLocalNumber()
-    {
-        Assert.assertTrue("Returned value not equal to 14",this.getLocalNumber() == 14);
     }
 }
