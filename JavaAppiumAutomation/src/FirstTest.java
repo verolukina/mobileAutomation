@@ -9,6 +9,7 @@ import org.junit.Test;
 import org.openqa.selenium.By;
 
 import org.openqa.selenium.Dimension;
+import org.openqa.selenium.ScreenOrientation;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.remote.DesiredCapabilities;
 import org.openqa.selenium.support.ui.ExpectedConditions;
@@ -492,6 +493,65 @@ Ex3: Тест: отмена поиска
                 By.id("org.wikipedia:id/view_page_title_textssss"),
                 "Title not present"
         );
+    }
+
+        /*
+      Ex7*: Поворот экрана
+      Appium устроен так, что может сохранить у себя в памяти поворот экрана, который использовался в предыдущем тесте,
+      и начать новый тест с тем же поворотом. Мы написали тест на поворот экрана, и он может сломаться до того,
+      как положение экрана восстановится. Следовательно, если мы запустим несколько тестов одновременно,
+      последующие тесты будут выполняться в неправильном положении экрана, что может привести к
+      незапланированным проблемам.
+      Как нам сделать так, чтобы после теста на поворот экрана сам экран всегда оказывался в правильном положении,
+      даже если тест упал в тот момент, когда экран был наклонен?
+     */
+
+    @Test
+    public void testChangeScreenOrientationOnSearchResults() {
+        try {
+            waitForElementAndClick(
+                    By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                    "Cannot find search input",
+                    2);
+            String searchLine = "Java";
+            waitForElementAndSendKeys(
+                    By.xpath("//*[contains(@text, 'Search…')]"),
+                    searchLine,
+                    "Cannot find search input",
+                    2);
+            waitForElementAndClick(
+                    By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Object-oriented programming language']"),
+                    "Cannot find 'Object-oriented programming language' topic by " + searchLine,
+                    2);
+            String titleBeforeRotation = waitForElementAndGetAttribute(
+                    By.id("org.wikipedia:id/view_page_title_text"),
+                    "text",
+                    "Cannot find title of article",
+                    15);
+            driver.rotate(ScreenOrientation.LANDSCAPE);
+            String titleAfterRotation = waitForElementAndGetAttribute(
+                    By.id("org.wikipedia:id/view_page_title_texttt"),
+                    "text",
+                    "Cannot find title of article",
+                    15);
+            Assert.assertEquals(
+                    "article title have been changed after screen rotation",
+                    titleBeforeRotation,
+                    titleAfterRotation);
+            driver.rotate(ScreenOrientation.PORTRAIT);
+            String titleAfterSecondRotation = waitForElementAndGetAttribute(
+                    By.id("org.wikipedia:id/view_page_title_text"),
+                    "text",
+                    "Cannot find title of article",
+                    15);
+            Assert.assertEquals(
+                    "article title have been changed after screen rotation",
+                    titleBeforeRotation,
+                    titleAfterSecondRotation);
+        } catch (Exception error) {
+            driver.rotate(ScreenOrientation.PORTRAIT);
+            throw error;
+        }
     }
 
 
