@@ -134,6 +134,41 @@ public class FirstTest {
                 placeholderText);
     }
 
+    /*
+Ex3: Тест: отмена поиска
+Написать тест, который:
+1. Ищет какое-то слово
+2. Убеждается, что найдено несколько статей
+3. Отменяет поиск
+4. Убеждается, что результат поиска пропал
+ */
+    @Test
+    public void testSearchAndClearArticles() {
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Cannot find search input",
+                2);
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search…')]"),
+                "JAVA",
+                "Cannot find search input",
+                2);
+        List<WebElement> pageListItems = waitForElementsPresent(
+                By.id("org.wikipedia:id/page_list_item_container"),
+                "Cannot find list item container",
+                2);
+        Assert.assertTrue(
+                "Only one item or less",
+                pageListItems.size() > 1);
+        waitForElementAndClick(
+                By.id("org.wikipedia:id/search_close_btn"),
+                "Cannot find X to cancel search",
+                2);
+        waitForElementsPresent(
+                By.id("org.wikipedia:id/search_empty_image"),
+                "Search result is not missing");
+    }
+
 
 
     // Private methods
