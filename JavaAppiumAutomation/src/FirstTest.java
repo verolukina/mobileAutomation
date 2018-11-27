@@ -169,6 +169,34 @@ Ex3: Тест: отмена поиска
                 "Search result is not missing");
     }
 
+    /*
+    Ex4*: Тест: проверка слов в поиске
+    Написать тест, который:
+    1. Ищет какое-то слово
+    2. Убеждается, что в каждом результате поиска есть это слово.
+     */
+    @Test
+    public void testSearchContaintAndClearArticles() {
+        String keyword = "JAVA";
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Cannot find search input",
+                2);
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search…')]"),
+                keyword,
+                "Cannot find search input",
+                2);
+        List<WebElement> pageListItems = waitForElementsPresent(
+                By.id("org.wikipedia:id/page_list_item_title"),
+                "Cannot find list item container",
+                2);
+        for (WebElement element: pageListItems) {
+            String textString =  element.getAttribute("text");
+            Assert.assertTrue("Text does not contain the word " + keyword, textString.toLowerCase().contains(keyword.toLowerCase()));
+        }
+    }
+
 
 
     // Private methods
