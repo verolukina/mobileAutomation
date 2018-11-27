@@ -464,6 +464,36 @@ Ex3: Тест: отмена поиска
 
     }
 
+        /*
+    Ex6: Тест: assert title
+    Написать тест, который открывает статью и убеждается, что у нее есть элемент title.
+    Важно: тест не должен дожидаться появления title, проверка должна производиться сразу.
+    Если title не найден - тест падает с ошибкой. Метод можно назвать assertElementPresent.
+     */
+
+    @Test
+    public void testAssertTitle() {
+        String searchTitle = "Java";
+
+        waitForElementAndClick(
+                By.xpath("//*[contains(@text, 'Search Wikipedia')]"),
+                "Cannot find search input",
+                2);
+        waitForElementAndSendKeys(
+                By.xpath("//*[contains(@text, 'Search…')]"),
+                searchTitle,
+                "Cannot find search input",
+                2);
+        waitForElementAndClick(
+                By.xpath("//*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='Object-oriented programming language']"),
+                "Cannot find 'Object-oriented programming language' topic by 'Java'",
+                2);
+        assertElementPresent(
+                By.id("org.wikipedia:id/view_page_title_textssss"),
+                "Title not present"
+        );
+    }
+
 
 
     // Private methods
