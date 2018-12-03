@@ -129,12 +129,10 @@ public class MainPageObject {
         return waitForElementPresent(by, errorMessage, timeoutInSeconds).getAttribute(attribute);
     }
 
-    public void assertElementPresent(By by, String errorMessage) {
-        WebElement element = driver.findElement(by);
-        if (element == null) {
-            throw new AssertionError(errorMessage);
-        }
-    }
+
+
+
+
 
 
 }

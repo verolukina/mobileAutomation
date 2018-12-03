@@ -14,7 +14,8 @@ public class ArticlePageObject extends MainPageObject {
         ADD_TO_MY_LIST_OVERLAY = "org.wikipedia:id/onboarding_button",
         MY_LIST_NAME_INPUT = "org.wikipedia:id/text_input",
         MY_LIST_OK_BUTTON = "//*[@text='OK']",
-        CLOSE_ARTICLE_BUTTON = "//android.widget.ImageButton[@content-desc='Navigate up']";
+        CLOSE_ARTICLE_BUTTON = "//android.widget.ImageButton[@content-desc='Navigate up']",
+        FOLDER_BY_NAME_TPL = "//*[@text='{FOLDER_NAME}']";
 
 
         public ArticlePageObject(AppiumDriver driver) {
@@ -41,10 +42,24 @@ public class ArticlePageObject extends MainPageObject {
                         By.xpath(OPTION_BUTTON),
                         "Cannot find button to open article options",
                         15);
+                addArticleToListFirstTime(nameOfFolder);
+        }
+
+        public void addArticleToMyListThroughShortMenuFirstTime(String nameOfFolder, String nameOfArticle, SearchPageObject searchPageObject) {
+                searchPageObject.longPressForSearchResultWithTitle(nameOfArticle);
+                addArticleToListFirstTime(nameOfFolder);
+        }
+
+        public void addArticleToMyExistingListThroughShortMenu(String nameOfFolder, String nameOfArticle, SearchPageObject searchPageObject) {
+                searchPageObject.longPressForSearchResultWithTitle(nameOfArticle);
+                addArticleToExistingList(nameOfFolder);
+        }
+
+        private void addArticleToListFirstTime(String nameOfFolder) {
                 waitForElementAndClick(
                         By.xpath(OPTION_ADD_TO_MY_LIST_BUTTON),
-                        "Cannot find options to add article to reading list",
-                        15);
+                        "Cannot find 'Add to reading list' button",
+                        5);
                 waitForElementAndClick(
                         By.id(ADD_TO_MY_LIST_OVERLAY),
                         "Cannot find 'Got it' tip overlay",
@@ -53,7 +68,6 @@ public class ArticlePageObject extends MainPageObject {
                         By.id(MY_LIST_NAME_INPUT),
                         "Cannot find input to set name of articles folder",
                         5);
-
                 waitForElementAndSendKeys(
                         By.id(MY_LIST_NAME_INPUT),
                         nameOfFolder,
@@ -65,10 +79,31 @@ public class ArticlePageObject extends MainPageObject {
                         5);
         }
 
+        private void addArticleToExistingList(String nameOfFolder) {
+                waitForElementAndClick(
+                    By.xpath(OPTION_ADD_TO_MY_LIST_BUTTON),
+                   "Cannot find 'Add to reading list' button",
+                        5);
+                waitForElementAndClick(
+                     By.xpath(getFolderXpathByName(nameOfFolder)),
+                     "Cannot find '"+ nameOfFolder +"' folder",
+                    5);
+        }
+
         public void closeArticle() {
                 waitForElementAndClick(
                         By.xpath(CLOSE_ARTICLE_BUTTON),
                         "Cannot close article, cannot find X link",
                         5);
+        }
+
+        private static String getFolderXpathByName(String nameOfFolder) {
+                return FOLDER_BY_NAME_TPL.replace("{FOLDER_NAME}", nameOfFolder);
+        }
+
+        public void assertTitleElementPresent(String errorMessage) {
+                if (!driver.findElement(By.id(TITLE)).isDisplayed()) {
+                        throw new AssertionError(errorMessage);
+                }
         }
 }
