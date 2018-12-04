@@ -7,8 +7,8 @@ public class MyListPageObject extends MainPageObject {
 
 
     public  static final String
-            FOLDER_BY_NAME_TPL = "//*[@text='{FOLDER_NAME}']",
-            ARTICLE_BY_TITLE_TPL = "//*[@text='{TITLE}']";
+            FOLDER_BY_NAME_TPL = "xpath://*[@text='{FOLDER_NAME}']",
+            ARTICLE_BY_TITLE_TPL = "xpath://*[@text='{TITLE}']";
 
     public MyListPageObject(AppiumDriver driver) {
         super(driver);
@@ -16,23 +16,23 @@ public class MyListPageObject extends MainPageObject {
 
     public void openFolderByName(String nameOfFolder) {
         waitForElementAndClick(
-                By.xpath(getFolderXpathByName(nameOfFolder)),
+                getFolderXpathByName(nameOfFolder),
                 "Cannot find folder by name " + nameOfFolder,
                 5);
     }
 
     public void waitForArticleToAppearByTitle(String articleTitle) {
-        waitForElementPresent(By.xpath(getFolderXpathByName(articleTitle)), "Cannot find saved article by title " + articleTitle, 15);
+        waitForElementPresent(getFolderXpathByName(articleTitle), "Cannot find saved article by title " + articleTitle, 15);
     }
 
     public void waitForArticleToDisappearByTitle(String articleTitle) {
-        waitForElementNotPresent(By.xpath(getFolderXpathByName(articleTitle)), "Saved article still present with title" + articleTitle, 15);
+        waitForElementNotPresent(getFolderXpathByName(articleTitle), "Saved article still present with title" + articleTitle, 15);
     }
 
     public void swipeByArticleToDelete(String articleTitle) {
         waitForArticleToAppearByTitle(articleTitle);
         swipeElementToLeft(
-                By.xpath(getFolderXpathByName(articleTitle)),
+                getFolderXpathByName(articleTitle),
                 "Cannot find saved article");
         waitForArticleToDisappearByTitle(articleTitle);
     }

@@ -21,9 +21,8 @@ public class iOSTestCase extends TestCase {
         DesiredCapabilities capabilities = new DesiredCapabilities();
         capabilities.setCapability("platformName","iOS");
         capabilities.setCapability("deviceName","iPhone 8");
-        capabilities.setCapability("platformVersion","11.4");
-        capabilities.setCapability("automationName","Appium");
-        capabilities.setCapability("app","/Users/christianmoler/Desktop/mobileAutomation/JavaAppiumAutomation/apks/Wikipedia.app");
+        capabilities.setCapability("platformVersion","12.1");
+        capabilities.setCapability("app","/Users/veronika.lukina/Desktop/mobileAutomation/JavaAppiumAutomation/apks/Wikipedia.app");
         // без таймаута ошибка "org.openqa.selenium.WebDriverException: Returned value cannot be converted to WebElement: {element-6066-11e4-a52e-4f735466cecf=1}"
         capabilities.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, "60");
         driver = new IOSDriver(new URL(AppiumURL), capabilities);
