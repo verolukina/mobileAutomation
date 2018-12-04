@@ -2,13 +2,14 @@ package test;
 
 import lib.CoreTestCase;
 import lib.ui.SearchPageObject;
+import lib.ui.factories.SearchPageObjectFactory;
 import org.junit.Test;
 
 public class SearchTests extends CoreTestCase {
 
     @Test
     public void testSearch() {
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
 
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine("Java");
@@ -17,7 +18,7 @@ public class SearchTests extends CoreTestCase {
 
     @Test
     public void testCancelSearch() {
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
 
         searchPageObject.initSearchInput();
         searchPageObject.waitForCancelButtonToAppear();
@@ -27,7 +28,7 @@ public class SearchTests extends CoreTestCase {
 
     @Test
     public void testAmountOfNotEmptySearch() {
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
         searchPageObject.initSearchInput();
         String searchLine = "Linkin Park Discography";
         searchPageObject.typeSearchLine(searchLine);
@@ -38,7 +39,7 @@ public class SearchTests extends CoreTestCase {
 
     @Test
     public void testAmountOfEmptySearch() {
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
         searchPageObject.initSearchInput();
         String searchLine = "asdaszxxcz";
         searchPageObject.typeSearchLine(searchLine);
@@ -56,7 +57,7 @@ public class SearchTests extends CoreTestCase {
     @Test
     public void testCheckSearchStringInSearchField() {
         String expectedString = "Search…";
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
 
         searchPageObject.initSearchInput();
         String searchFieldContent = searchPageObject.getSearchFieldContent();
@@ -73,7 +74,7 @@ Ex3: Тест: отмена поиска
  */
     @Test
     public void testSearchAndClearArticles() {
-        SearchPageObject searchPageObject = new SearchPageObject(driver);
+        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
         searchPageObject.initSearchInput();
         String searchLine = "java";
         searchPageObject.typeSearchLine(searchLine);

@@ -5,17 +5,17 @@ import io.appium.java_client.TouchAction;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-public class SearchPageObject extends MainPageObject {
+abstract public class SearchPageObject extends MainPageObject {
 
-    private static final String
-        SEARCH_INIT_ELEMENT = "xpath://*[contains(@text, 'Search Wikipedia')]",
-        SEARCH_INPUT = "xpath://*[contains(@text, 'Search…')]",
-        SEARCH_INPUT_ID = "id:org.wikipedia:id/search_src_text",
-        SEARCH_CANCEL_BUTTON = "id:org.wikipedia:id/search_close_btn",
-        SEARCH_RESULT_BY_SUBSTRING_TPL = "xpath://*[@resource-id='org.wikipedia:id/page_list_item_container']//*[@text='{SUBSTRING}']",
-        SEARCH_RESULT_ELEMENT = "xpath://*[@resource-id='org.wikipedia:id/search_results_list']/*[@resource-id='org.wikipedia:id/page_list_item_container']",
-        SEARCH_EMPTY_RESULT_ELEMENT = "xpath://*[@text='No results found']",
-        SEARCH_EMPTY_RESULT_ELEMENT_IMAGE = "id:org.wikipedia:id/search_empty_image";
+     protected static String
+        SEARCH_INIT_ELEMENT,
+        SEARCH_INPUT,
+        SEARCH_INPUT_ID,
+        SEARCH_CANCEL_BUTTON,
+        SEARCH_RESULT_BY_SUBSTRING_TPL,
+        SEARCH_RESULT_ELEMENT,
+        SEARCH_EMPTY_RESULT_ELEMENT,
+        SEARCH_EMPTY_RESULT_ELEMENT_IMAGE;
 
     public  SearchPageObject(AppiumDriver driver) {
         super(driver);
