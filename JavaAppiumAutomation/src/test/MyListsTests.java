@@ -1,14 +1,20 @@
 package test;
 
 import lib.CoreTestCase;
+import lib.Platform;
 import lib.ui.ArticlePageObject;
 import lib.ui.MyListPageObject;
 import lib.ui.NavigationUI;
 import lib.ui.SearchPageObject;
+import lib.ui.factories.ArticlePageObjectFactory;
+import lib.ui.factories.MyListsPageObjectFactory;
+import lib.ui.factories.NavigationUIFactory;
 import lib.ui.factories.SearchPageObjectFactory;
 import org.junit.Test;
 
 public class MyListsTests extends CoreTestCase {
+
+    public static String nameOfFolder = "Learning programming";
 
     @Test
     public void testSaveFirstArticleToMyList() {
@@ -19,19 +25,26 @@ public class MyListsTests extends CoreTestCase {
         searchPageObject.typeSearchLine("Java");
         searchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
 
-        ArticlePageObject articlePageObject = new ArticlePageObject(driver);
+        ArticlePageObject articlePageObject = ArticlePageObjectFactory.get(driver);
         articlePageObject.waitForTitleElement();
         String articleTitle = articlePageObject.getArticleTitle();
-        String nameOfFolder = "Learning programming";
-        articlePageObject.addArticleToMyList(nameOfFolder);
+
+        if (Platform.getInstance().isAndroid()) {
+            articlePageObject.addArticleToMyList(nameOfFolder);
+        } else {
+            articlePageObject.addArticleToMySaved();
+        }
+
         articlePageObject.closeArticle();
 
-        NavigationUI navigationUI = new NavigationUI(driver);
+        NavigationUI navigationUI = NavigationUIFactory.get(driver);
         navigationUI.clickMyLists();
 
         //Кликает на рандомный элемент , если искать элемент по строке '1 article, 2.30 MiB' то находит нормально
-        MyListPageObject myListPageObject = new MyListPageObject(driver);
-        myListPageObject.openFolderByName(nameOfFolder);
+        MyListPageObject myListPageObject = MyListsPageObjectFactory.get(driver);
+        if (Platform.getInstance().isAndroid()) {
+            myListPageObject.openFolderByName(nameOfFolder);
+        }
         myListPageObject.swipeByArticleToDelete(articleTitle);
 
     }
@@ -58,17 +71,17 @@ public class MyListsTests extends CoreTestCase {
         searchPageObject.initSearchInput();
         searchPageObject.typeSearchLine(checkTitle);
 
-        ArticlePageObject articlePageObject = new ArticlePageObject(driver);
+        ArticlePageObject articlePageObject = ArticlePageObjectFactory.get(driver);
         articlePageObject.addArticleToMyListThroughShortMenuFirstTime(nameOfFolder, survivingArticle, searchPageObject);
         articlePageObject.addArticleToMyExistingListThroughShortMenu(nameOfFolder, deadArticle, searchPageObject);
 
         searchPageObject.clickCancelSearch();
         searchPageObject.clickCancelSearch();
 
-        NavigationUI navigationUI = new NavigationUI(driver);
+        NavigationUI navigationUI = NavigationUIFactory.get(driver);
         navigationUI.clickMyLists();
 
-        MyListPageObject myListPageObject = new MyListPageObject(driver);
+        MyListPageObject myListPageObject = MyListsPageObjectFactory.get(driver);
         // по названию папки попадает в нее через раз
         myListPageObject.openFolderByName("2 articles, 0.00 MiB");
 

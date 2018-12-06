@@ -3,6 +3,7 @@ package test;
 import lib.CoreTestCase;
 import lib.ui.ArticlePageObject;
 import lib.ui.SearchPageObject;
+import lib.ui.factories.ArticlePageObjectFactory;
 import lib.ui.factories.SearchPageObjectFactory;
 import org.junit.Test;
 
@@ -16,7 +17,7 @@ public class ArticleTests extends CoreTestCase {
         searchPageObject.typeSearchLine("Java");
         searchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
 
-        ArticlePageObject articlePageObject = new ArticlePageObject(driver);
+        ArticlePageObject articlePageObject = ArticlePageObjectFactory.get(driver);
         String articleTitle = articlePageObject.getArticleTitle();
 
         assertEquals(
@@ -31,10 +32,10 @@ public class ArticleTests extends CoreTestCase {
         SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
 
         searchPageObject.initSearchInput();
-        searchPageObject.typeSearchLine("Appium");
-        searchPageObject.clickByArticleWithSubstring("Appium");
+        searchPageObject.typeSearchLine("Java");
+        searchPageObject.clickByArticleWithSubstring("Object-oriented programming language");
 
-        ArticlePageObject articlePageObject = new ArticlePageObject(driver);
+        ArticlePageObject articlePageObject = ArticlePageObjectFactory.get(driver);
         articlePageObject.waitForTitleElement();
         articlePageObject.swipeToFooter();
     }
@@ -57,7 +58,7 @@ public class ArticleTests extends CoreTestCase {
         searchPageObject.typeSearchLine(searchTitle);
         searchPageObject.clickByArticleWithSubstring(subtitleString);
 
-        ArticlePageObject articlePageObject = new ArticlePageObject(driver);
+        ArticlePageObject articlePageObject = ArticlePageObjectFactory.get(driver);
         articlePageObject.assertTitleElementPresent("Title not present");
     }
 
