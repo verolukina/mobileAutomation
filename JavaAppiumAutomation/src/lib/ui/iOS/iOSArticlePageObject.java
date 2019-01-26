@@ -8,9 +8,10 @@ public class iOSArticlePageObject extends ArticlePageObject {
     static {
         TITLE = "id:Java (programming language)";
         FOOTER_ELEMENT = "id:View article in browser";
-        OPTION_ADD_TO_MY_LIST_BUTTON = "xpath://XCUIElementTypeButton[@name='Save for later']";
+        OPTION_ADD_TO_MY_LIST_BUTTON = "id:Save for later";
         CLOSE_ARTICLE_BUTTON = "id:Search";
         FOLDER_BY_NAME_TPL = "xpath://*[@text='{FOLDER_NAME}']";
+        SAVED_ARTICLE_BUTTON = "xpath://XCUIElementTypeButton[@name='Saved. Activate to unsave.']";
     }
 
     public iOSArticlePageObject(AppiumDriver driver) {

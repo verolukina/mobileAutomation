@@ -7,7 +7,8 @@ abstract public class MyListPageObject extends MainPageObject {
 
     protected static String
             FOLDER_BY_NAME_TPL,
-            ARTICLE_BY_TITLE_TPL;
+            ARTICLE_BY_TITLE_TPL,
+            ALERT_SYNC_CLOSE_BUTTON;
 
     public MyListPageObject(AppiumDriver driver) {
         super(driver);
@@ -21,20 +22,25 @@ abstract public class MyListPageObject extends MainPageObject {
     }
 
     public void waitForArticleToAppearByTitle(String articleTitle) {
-        waitForElementPresent(getFolderXpathByName(articleTitle), "Cannot find saved article by title " + articleTitle, 15);
+        waitForElementPresent(getSavedArticleXpathByTitle(articleTitle), "Cannot find saved article by title " + articleTitle, 15);
     }
 
     public void waitForArticleToDisappearByTitle(String articleTitle) {
-        waitForElementNotPresent(getFolderXpathByName(articleTitle), "Saved article still present with title" + articleTitle, 15);
+        waitForElementNotPresent(getSavedArticleXpathByTitle(articleTitle), "Saved article still present with title" + articleTitle, 15);
+    }
+
+    public void closeSyncAlert() {
+        waitForElementAndClick(ALERT_SYNC_CLOSE_BUTTON, "Can't close sync alert", 5);
+        waitForElementAndClick(ALERT_SYNC_CLOSE_BUTTON, "Can't close sync alert", 5);
     }
 
     public void swipeByArticleToDelete(String articleTitle) {
         waitForArticleToAppearByTitle(articleTitle);
         swipeElementToLeft(
-                getFolderXpathByName(articleTitle),
+                getSavedArticleXpathByTitle(articleTitle),
                 "Cannot find saved article");
         if (Platform.getInstance().isIOS()) {
-            clickElementToTheRightUpperCorner(getFolderXpathByName(articleTitle), "Error");
+            clickElementToTheRightUpperCorner(getSavedArticleXpathByTitle(articleTitle), "Error");
         }
 
         waitForArticleToDisappearByTitle(articleTitle);

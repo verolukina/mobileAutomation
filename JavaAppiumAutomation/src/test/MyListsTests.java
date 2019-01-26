@@ -11,6 +11,9 @@ import lib.ui.factories.MyListsPageObjectFactory;
 import lib.ui.factories.NavigationUIFactory;
 import lib.ui.factories.SearchPageObjectFactory;
 import org.junit.Test;
+import org.openqa.selenium.WebElement;
+
+import java.util.List;
 
 public class MyListsTests extends CoreTestCase {
 
@@ -37,14 +40,22 @@ public class MyListsTests extends CoreTestCase {
 
         articlePageObject.closeArticle();
 
+        if (Platform.getInstance().isIOS()) {
+            searchPageObject.clickCancelSearch();
+        }
+
         NavigationUI navigationUI = NavigationUIFactory.get(driver);
         navigationUI.clickMyLists();
 
-        //Кликает на рандомный элемент , если искать элемент по строке '1 article, 2.30 MiB' то находит нормально
+
         MyListPageObject myListPageObject = MyListsPageObjectFactory.get(driver);
+
         if (Platform.getInstance().isAndroid()) {
             myListPageObject.openFolderByName(nameOfFolder);
+        } else {
+            myListPageObject.closeSyncAlert();
         }
+
         myListPageObject.swipeByArticleToDelete(articleTitle);
 
     }
@@ -57,6 +68,11 @@ public class MyListsTests extends CoreTestCase {
      2. Удаляет одну из статей
      3. Убеждается, что вторая осталась
      4. Переходит в неё и убеждается, что title совпадает
+     
+     Ex11: Рефакторинг тестов
+     Адаптировать под iOS тест на удаление одной сохраненной статьи из двух.
+     Вместо проверки title-элемента придумать другой способ верификации оставшейся статьи
+     (т.е. способ убедиться, что осталась в сохраненных ожидаемая статья).
     */
 
     @Test
@@ -72,25 +88,45 @@ public class MyListsTests extends CoreTestCase {
         searchPageObject.typeSearchLine(checkTitle);
 
         ArticlePageObject articlePageObject = ArticlePageObjectFactory.get(driver);
-        articlePageObject.addArticleToMyListThroughShortMenuFirstTime(nameOfFolder, survivingArticle, searchPageObject);
-        articlePageObject.addArticleToMyExistingListThroughShortMenu(nameOfFolder, deadArticle, searchPageObject);
+        if (Platform.getInstance().isAndroid()) {
+            articlePageObject.addArticleToMyListThroughShortMenuFirstTime(nameOfFolder, survivingArticle, searchPageObject);
+            articlePageObject.addArticleToMyExistingListThroughShortMenu(nameOfFolder, deadArticle, searchPageObject);
+            searchPageObject.clickCancelSearch();
+            searchPageObject.clickCancelSearch();
+        } else {
+            searchPageObject.clickByArticleWithSubstring(survivingArticle);
+            // 2 тапа , потому что 1ый скрывает всплывающее сообщение
+            articlePageObject.addArticleToMySaved();
+            articlePageObject.addArticleToMySaved();
+            articlePageObject.closeArticle();
+            searchPageObject.clickByArticleWithSubstring(deadArticle);
+            articlePageObject.addArticleToMySaved();
+            articlePageObject.closeArticle();
+            searchPageObject.clickCancelSearch();
+        }
 
-        searchPageObject.clickCancelSearch();
-        searchPageObject.clickCancelSearch();
 
         NavigationUI navigationUI = NavigationUIFactory.get(driver);
         navigationUI.clickMyLists();
 
         MyListPageObject myListPageObject = MyListsPageObjectFactory.get(driver);
         // по названию папки попадает в нее через раз
-        myListPageObject.openFolderByName("2 articles, 0.00 MiB");
+        if (Platform.getInstance().isAndroid()) {
+            myListPageObject.openFolderByName("2 articles, 0.00 MiB");
+            myListPageObject.swipeByArticleToDelete(Character.toLowerCase(deadArticle.charAt(0)) + deadArticle.substring(1));
+            searchPageObject.clickByArticleWithSubstring(Character.toLowerCase(survivingArticle.charAt(0)) + survivingArticle.substring(1));
+            assertEquals("Article title not valid",
+                    articlePageObject.getArticleTitle(),
+                    checkTitle);
+        } else {
+            myListPageObject.closeSyncAlert();
+            myListPageObject.swipeByArticleToDelete(deadArticle);
+            searchPageObject.clickByArticleWithSubstring(survivingArticle);
+            articlePageObject.checkSavedButtonIsActive();
 
-        myListPageObject.swipeByArticleToDelete(Character.toLowerCase(deadArticle.charAt(0)) + deadArticle.substring(1));
-        searchPageObject.clickByArticleWithSubstring(Character.toLowerCase(survivingArticle.charAt(0)) + survivingArticle.substring(1));
+        }
 
-        assertEquals("Article title not valid",
-                articlePageObject.getArticleTitle(),
-                checkTitle);
+
     }
 
 }

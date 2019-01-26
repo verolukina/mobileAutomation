@@ -64,8 +64,8 @@ public class Platform {
         DesiredCapabilities capabilities = new DesiredCapabilities();
 
         capabilities.setCapability("platformName","iOS");
-        capabilities.setCapability("deviceName","iPhone XR");
-        capabilities.setCapability("platformVersion","12.1");
+        capabilities.setCapability("deviceName","iPhone X");
+        capabilities.setCapability("platformVersion","11.4");
         capabilities.setCapability("app","/Users/christian/Desktop/mobileAutomation/JavaAppiumAutomation/apks//Wikipedia.app");
         // без таймаута ошибка "org.openqa.selenium.WebDriverException: Returned value cannot be converted to WebElement: {element-6066-11e4-a52e-4f735466cecf=1}"
         capabilities.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, "60");

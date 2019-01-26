@@ -132,7 +132,7 @@ public class MainPageObject {
         int pointToClickY = middleY;
 
         TouchAction action = new TouchAction(driver);
-        action.tap(pointToClickX, pointToClickY);
+        action.tap(pointToClickX, pointToClickY).perform();
     }
 
     public void swipeElementToLeft(String locator, String error_message) {

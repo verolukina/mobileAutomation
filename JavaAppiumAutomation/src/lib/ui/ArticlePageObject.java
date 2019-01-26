@@ -16,7 +16,8 @@ abstract public class ArticlePageObject extends MainPageObject {
         MY_LIST_NAME_INPUT,
         MY_LIST_OK_BUTTON,
         CLOSE_ARTICLE_BUTTON,
-        FOLDER_BY_NAME_TPL;
+        FOLDER_BY_NAME_TPL,
+        SAVED_ARTICLE_BUTTON;
 
 
         public ArticlePageObject(AppiumDriver driver) {
@@ -46,6 +47,10 @@ abstract public class ArticlePageObject extends MainPageObject {
                                 "Cannot find the end of article",
                                 20);
                 }
+        }
+
+        public void checkSavedButtonIsActive() {
+                waitForElementPresent(SAVED_ARTICLE_BUTTON, "Article not saved", 5);
         }
 
         public void addArticleToMyList(String nameOfFolder) {
