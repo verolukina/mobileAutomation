@@ -50,11 +50,11 @@ public class Platform {
 
         capabilities.setCapability("platformName","Android");
         capabilities.setCapability("deviceName","AndroidTestDevice");
-        capabilities.setCapability("platformName","8.0");
+        capabilities.setCapability("platformName","6.0");
         capabilities.setCapability("automationName","Appium");
         capabilities.setCapability("appPackage","org.wikipedia");
         capabilities.setCapability("appActivity",".main.MainActivity");
-        capabilities.setCapability("app","/Users/veronika.lukina/Desktop/mobileAutomation/JavaAppiumAutomation/apks/org.wikipedia.apk");
+        capabilities.setCapability("app","/Users/christian/Desktop/mobileAutomation/JavaAppiumAutomation/apks/org.wikipedia.apk");
         // без таймаута ошибка "org.openqa.selenium.WebDriverException: Returned value cannot be converted to WebElement: {element-6066-11e4-a52e-4f735466cecf=1}"
         capabilities.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, "60");
         return capabilities;
@@ -64,9 +64,9 @@ public class Platform {
         DesiredCapabilities capabilities = new DesiredCapabilities();
 
         capabilities.setCapability("platformName","iOS");
-        capabilities.setCapability("deviceName","iPhone 8");
+        capabilities.setCapability("deviceName","iPhone XR");
         capabilities.setCapability("platformVersion","12.1");
-        capabilities.setCapability("app","/Users/veronika.lukina/Desktop/mobileAutomation/JavaAppiumAutomation/apks/Wikipedia.app");
+        capabilities.setCapability("app","/Users/christian/Desktop/mobileAutomation/JavaAppiumAutomation/apks//Wikipedia.app");
         // без таймаута ошибка "org.openqa.selenium.WebDriverException: Returned value cannot be converted to WebElement: {element-6066-11e4-a52e-4f735466cecf=1}"
         capabilities.setCapability(MobileCapabilityType.NEW_COMMAND_TIMEOUT, "60");
         return capabilities;

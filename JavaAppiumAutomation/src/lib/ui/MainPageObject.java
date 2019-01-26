@@ -24,7 +24,7 @@ public class MainPageObject {
     public WebElement waitForElementPresent(String locator, String errorMessage, long timeoutInSeconds) {
         By by = getLocatorByString(locator);
         WebDriverWait wait = new WebDriverWait(driver, timeoutInSeconds);
-        wait.withMessage(errorMessage + "\n");
+        wait.withMessage(errorMessage + "\n" + "by" + locator + "\n");
         return wait.until(ExpectedConditions.presenceOfElementLocated(by));
     }
 

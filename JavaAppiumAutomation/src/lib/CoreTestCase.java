@@ -8,8 +8,6 @@ import org.openqa.selenium.ScreenOrientation;
 
 public class CoreTestCase extends TestCase {
 
-
-
     protected AppiumDriver driver;
 
     @Override
