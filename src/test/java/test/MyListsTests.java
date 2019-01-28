@@ -96,79 +96,79 @@ public class MyListsTests extends CoreTestCase {
      (т.е. способ убедиться, что осталась в сохраненных ожидаемая статья).
     */
 
-    @Test
-    public void testAddingTwoArticles() {
-        String nameOfFolder = "Test Adding Two Articles";
-        String survivingArticle = "sland of Indonesia";
-        String deadArticle = "bject-oriented programming language";
-        String checkTitle = "Java";
-        String deadArticleTitle = "";
-
-        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
-
-        searchPageObject.initSearchInput();
-        searchPageObject.typeSearchLine(checkTitle);
-
-        ArticlePageObject articlePageObject = ArticlePageObjectFactory.get(driver);
-        if (Platform.getInstance().isAndroid()) {
-            articlePageObject.addArticleToMyListThroughShortMenuFirstTime(nameOfFolder, survivingArticle, searchPageObject);
-            articlePageObject.addArticleToMyExistingListThroughShortMenu(nameOfFolder, deadArticle, searchPageObject);
-            searchPageObject.clickCancelSearch();
-            searchPageObject.clickCancelSearch();
-        } else  {
-            searchPageObject.clickByArticleWithSubstring(survivingArticle);
-            articlePageObject.addArticleToMySaved();
-            if (Platform.getInstance().isIOS()) {
-                articlePageObject.addArticleToMySaved();
-                articlePageObject.closeArticle();
-                searchPageObject.clickByArticleWithSubstring(deadArticle);
-                articlePageObject.addArticleToMySaved();
-                articlePageObject.closeArticle();
-                searchPageObject.clickCancelSearch();
-            } else {
-                AutorizationPageObject Auth = new AutorizationPageObject(driver);
-                Auth.clickAuthButton();
-                Auth.enterLoginData(login, password);
-                Auth.submitForm();
-
-                articlePageObject.waitForTitleElement();
-
-                Assert.assertEquals("We are not on the same page after login",
-                        checkTitle,
-                        articlePageObject.getArticleTitle());
-                articlePageObject.addArticleToMySaved();
-
-                searchPageObject.initSearchInput();
-                searchPageObject.typeSearchLine(checkTitle);
-                searchPageObject.clickByArticleWithSubstring(deadArticle);
-                articlePageObject.addArticleToMySaved();
-                deadArticleTitle = articlePageObject.getArticleTitle();
-            }
-        }
-
-
-        NavigationUI navigationUI = NavigationUIFactory.get(driver);
-        navigationUI.openNavigation();
-        navigationUI.clickMyLists();
-
-        MyListPageObject myListPageObject = MyListsPageObjectFactory.get(driver);
-        if (Platform.getInstance().isAndroid()) {
-            myListPageObject.openFolderByName(nameOfFolder);
-            myListPageObject.swipeByArticleToDelete(Character.toLowerCase(deadArticle.charAt(0)) + deadArticle.substring(1));
-            searchPageObject.clickByArticleWithSubstring(Character.toLowerCase(survivingArticle.charAt(0)) + survivingArticle.substring(1));
-            assertEquals("Article title not valid",
-                    articlePageObject.getArticleTitle(),
-                    checkTitle);
-        } else if (Platform.getInstance().isIOS()){
-            myListPageObject.closeSyncAlert();
-            myListPageObject.swipeByArticleToDelete(deadArticleTitle);
-            searchPageObject.clickByArticleWithSubstring(survivingArticle);
-            articlePageObject.checkSavedButtonIsActive();
-        } else {
-            myListPageObject.swipeByArticleToDelete(deadArticleTitle);
-            myListPageObject.checkThatTitleAlive(checkTitle, "Article not found");
-        }
-
-    }
+//    @Test
+//    public void testAddingTwoArticles() {
+//        String nameOfFolder = "Test Adding Two Articles";
+//        String survivingArticle = "sland of Indonesia";
+//        String deadArticle = "bject-oriented programming language";
+//        String checkTitle = "Java";
+//        String deadArticleTitle = "";
+//
+//        SearchPageObject searchPageObject = SearchPageObjectFactory.get(driver);
+//
+//        searchPageObject.initSearchInput();
+//        searchPageObject.typeSearchLine(checkTitle);
+//
+//        ArticlePageObject articlePageObject = ArticlePageObjectFactory.get(driver);
+//        if (Platform.getInstance().isAndroid()) {
+//            articlePageObject.addArticleToMyListThroughShortMenuFirstTime(nameOfFolder, survivingArticle, searchPageObject);
+//            articlePageObject.addArticleToMyExistingListThroughShortMenu(nameOfFolder, deadArticle, searchPageObject);
+//            searchPageObject.clickCancelSearch();
+//            searchPageObject.clickCancelSearch();
+//        } else  {
+//            searchPageObject.clickByArticleWithSubstring(survivingArticle);
+//            articlePageObject.addArticleToMySaved();
+//            if (Platform.getInstance().isIOS()) {
+//                articlePageObject.addArticleToMySaved();
+//                articlePageObject.closeArticle();
+//                searchPageObject.clickByArticleWithSubstring(deadArticle);
+//                articlePageObject.addArticleToMySaved();
+//                articlePageObject.closeArticle();
+//                searchPageObject.clickCancelSearch();
+//            } else {
+//                AutorizationPageObject Auth = new AutorizationPageObject(driver);
+//                Auth.clickAuthButton();
+//                Auth.enterLoginData(login, password);
+//                Auth.submitForm();
+//
+//                articlePageObject.waitForTitleElement();
+//
+//                Assert.assertEquals("We are not on the same page after login",
+//                        checkTitle,
+//                        articlePageObject.getArticleTitle());
+//                articlePageObject.addArticleToMySaved();
+//
+//                searchPageObject.initSearchInput();
+//                searchPageObject.typeSearchLine(checkTitle);
+//                searchPageObject.clickByArticleWithSubstring(deadArticle);
+//                articlePageObject.addArticleToMySaved();
+//                deadArticleTitle = articlePageObject.getArticleTitle();
+//            }
+//        }
+//
+//
+//        NavigationUI navigationUI = NavigationUIFactory.get(driver);
+//        navigationUI.openNavigation();
+//        navigationUI.clickMyLists();
+//
+//        MyListPageObject myListPageObject = MyListsPageObjectFactory.get(driver);
+//        if (Platform.getInstance().isAndroid()) {
+//            myListPageObject.openFolderByName(nameOfFolder);
+//            myListPageObject.swipeByArticleToDelete(Character.toLowerCase(deadArticle.charAt(0)) + deadArticle.substring(1));
+//            searchPageObject.clickByArticleWithSubstring(Character.toLowerCase(survivingArticle.charAt(0)) + survivingArticle.substring(1));
+//            assertEquals("Article title not valid",
+//                    articlePageObject.getArticleTitle(),
+//                    checkTitle);
+//        } else if (Platform.getInstance().isIOS()){
+//            myListPageObject.closeSyncAlert();
+//            myListPageObject.swipeByArticleToDelete(deadArticleTitle);
+//            searchPageObject.clickByArticleWithSubstring(survivingArticle);
+//            articlePageObject.checkSavedButtonIsActive();
+//        } else {
+//            myListPageObject.swipeByArticleToDelete(deadArticleTitle);
+//            myListPageObject.checkThatTitleAlive(checkTitle, "Article not found");
+//        }
+//
+//    }
 
 }
